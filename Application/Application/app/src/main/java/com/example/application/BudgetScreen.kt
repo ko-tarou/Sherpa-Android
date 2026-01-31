@@ -8,7 +8,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,6 +22,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -101,22 +105,15 @@ fun BudgetScreen() {
                 fontWeight = FontWeight.Bold
             )
 
-            Surface( //項目追加
-                color = Color(0xFF1A1A1A),
-                shape = RoundedCornerShape(4.dp),
-                modifier = Modifier.padding(vertical = 4.dp)
+            PrimaryButton_2( //項目追加
+                modifier = Modifier.height(40.dp),
+                onClick = { /* 項目追加 */ }
             ) {
-                Row(
-                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "+ 項目を追加する",
-                        color = Color.White,
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
+                Text(
+                    text = "+ 項目を追加する",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
 
@@ -171,16 +168,22 @@ fun BudgetScreen() {
 
             Spacer(modifier = Modifier.height(20.dp))
         }
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.Black)
                 .padding(vertical = 12.dp)
         ) {
-            TotalExpenditureCard("2,250,000", "1,850,000", "+¥400,000")
+            TotalExpenditureCard(
+                "2,250,000",
+                "1,850,000",
+                "+¥400,000"
+            )
         }
     }
 }
+
 
 @Composable
 fun BudgetCard( //カード
@@ -269,6 +272,27 @@ fun BudgetColumn(value: String, label: String, modifier: Modifier, isHighlight: 
             color = Color.Gray,
             fontSize = 10.sp
         )
+    }
+}
+
+@Composable
+fun PrimaryButton_2(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    content: @Composable RowScope.() -> Unit
+) {
+    Button(
+        onClick = onClick,
+        modifier = modifier,
+        elevation = null,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color(0xFF1A1A1A),
+            contentColor = Color.White
+        ),
+        shape = RoundedCornerShape(4.dp),
+        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 6.dp)
+    ) {
+        content()
     }
 }
 

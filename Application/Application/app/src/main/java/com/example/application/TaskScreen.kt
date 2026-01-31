@@ -153,7 +153,8 @@ fun TaskCard(
     tagColor: Color,
     tagTextColor: Color,
     deadline: String,
-    sideBarColor: Color
+    sideBarColor: Color,
+    onMenuClick: () -> Unit = {}
 ) {
     Card(
         modifier = Modifier
@@ -190,7 +191,16 @@ fun TaskCard(
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
                         )
                     }
-                    Icon(Icons.Default.MoreVert, contentDescription = null, tint = Color.LightGray)
+                    IconButton(
+                        onClick = onMenuClick,
+                        modifier = Modifier.size(24.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.MoreVert,
+                            contentDescription = "メニュー",
+                            tint = Color.LightGray
+                        )
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))

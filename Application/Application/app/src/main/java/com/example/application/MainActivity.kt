@@ -1,15 +1,20 @@
 package com.example.application
 
+import android.graphics.drawable.shapes.Shape
 import android.os.Bundle
+import android.view.Surface
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,10 +26,17 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,6 +46,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.application.ui.theme.ApplicationTheme
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.TextStyle
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,6 +64,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun HomeScreen() {
+    var textState by remember { mutableStateOf("") }
     Column( //一番後ろ
         modifier = Modifier
             .fillMaxSize()
@@ -89,24 +105,19 @@ fun HomeScreen() {
 
             Spacer(modifier = Modifier.weight(1f))
 
-            Box( //新規作成
-                modifier = Modifier
-                    .width(120.dp)
-                    .height(35.dp)
-                    .background(Color(0xFFEF2324), RoundedCornerShape(16.dp))
-                    .padding(6.dp),
-                contentAlignment = Alignment.Center
+            PrimaryButton(
+                modifier = Modifier.height(40.dp),
+                onClick = { /* 新規作成 */ }
             ) {
                 Text(
                     text = "＋　新規作成",
-                    color = Color.White,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(100.dp))
+        Spacer(modifier = Modifier.height(80.dp))
 
         Column( //中央縦軸
             modifier = Modifier.fillMaxWidth(),
@@ -140,14 +151,30 @@ fun HomeScreen() {
                     .padding(16.dp)
             ) {
                 Column { //文字入力スペース
-                    Text(
-                        text = "イベントの概要を入力してください...",
-                        color = Color(0xFF46505A),
-                        fontSize = 18.sp
+                    TextField(
+                        value = textState,
+                        onValueChange = { textState = it },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
+                        placeholder = {
+                            Text(
+                                text = "イベントの概要を入力してください...",
+                                color = Color(0xFF46505A),
+                                fontSize = 17.sp
+                            )
+                        },
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
+                            focusedIndicatorColor = Color.Transparent, // 下線を消す
+                            unfocusedIndicatorColor = Color.Transparent,
+                            cursorColor = Color.White, // カーソルの色をアプリカラーの赤に
+                            focusedTextColor = Color.White,
+                            unfocusedTextColor = Color.White
+                        ),
+                        textStyle = TextStyle(fontSize = 18.sp)
                     )
-
-                    Spacer(modifier = Modifier.height(80.dp))
-
                     HorizontalDivider( //薄い真ん中の線
                         modifier = Modifier.padding(vertical = 12.dp),
                         thickness = 0.2.dp,
@@ -176,11 +203,9 @@ fun HomeScreen() {
                             )
                         }
 
-                        Box( //矢印ボタン
-                            modifier = Modifier
-                                .size(50.dp)
-                                .background(Color(0xFFEF2324), RoundedCornerShape(12.dp)),
-                            contentAlignment = Alignment.Center
+                        PrimaryButton(
+                            modifier = Modifier.size(50.dp),
+                            onClick = { /* 送信 */ }
                         ) {
                             Icon(
                                 painter = painterResource(id = R.drawable.outline_arrow_right_alt_24),
@@ -258,31 +283,60 @@ fun HomeScreen() {
 @Composable
 fun EventTag( //社内勉強会タブ
     painter: androidx.compose.ui.graphics.painter.Painter,
-    label: String
+    label: String,
+    onClick: () -> Unit = {}
 ) {
-    Row(
-        modifier = Modifier
-            .background(
-                color = Color.White.copy(alpha = 0.1f),
-                shape = RoundedCornerShape(20.dp)
-            )
-            .padding(horizontal = 12.dp, vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
+    Surface(
+        onClick = onClick,
+        color =  Color.White.copy(alpha = 0.1f),
+        shape = RoundedCornerShape(20.dp),
+        modifier = Modifier.padding(vertical = 4.dp)
     ) {
-        Icon(
-            painter = painter,
-            contentDescription = null,
-            tint = Color.Gray,
-            modifier = Modifier.size(30.dp)
-        )
+        Row(
+            modifier = Modifier
+                .background(
+                    color = Color.White.copy(alpha = 0.1f),
+                    shape = RoundedCornerShape(20.dp)
+                )
+                .padding(horizontal = 12.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = painter,
+                contentDescription = null,
+                tint = Color.Gray,
+                modifier = Modifier.size(30.dp)
+            )
 
-        Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(8.dp))
 
-        Text(
-            text = label,
-            color = Color.White,
-            fontSize = 16.sp,
-        )
+            Text(
+                text = label,
+                color = Color.White,
+                fontSize = 16.sp,
+            )
+        }
+    }
+}
+
+@Composable
+fun PrimaryButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    content: @Composable RowScope.() -> Unit
+) {
+    Button(
+        onClick = onClick,
+        modifier = modifier,
+        elevation = null,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color(0xFFEF2324),
+            contentColor = Color.White
+        ),
+        shape = RoundedCornerShape(12.dp),
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+    ) {
+        content()
     }
 }
 
