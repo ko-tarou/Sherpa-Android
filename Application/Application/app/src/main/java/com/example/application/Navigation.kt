@@ -77,14 +77,24 @@ fun MainScreen() {
         }
     ) { innerPadding ->
 
-        NavHost( //画面切り替え
+        NavHost(
             navController = navController,
-            startDestination = Screen.Home.route, //起動時にホームを開く
+            startDestination = Screen.Home.route,
             modifier = Modifier
                 .padding(innerPadding)
                 .background(Color.Black)
         ) {
-            composable(Screen.Home.route) { HomeScreen() } //ファイル関数
+            composable(Screen.Home.route) {
+                HomeScreen(
+                    onNavigateToAddEvent = {
+                        navController.navigate("add_event")
+                    }
+                )
+            }
+            composable("add_event") {
+                EventAddScreen(onBack = { navController.popBackStack() })
+            }
+
             composable(Screen.Task.route) { TaskScreen() }
             composable(Screen.Budget.route) { BudgetScreen() }
             composable(Screen.Setting.route) { SettingScreen() }
@@ -109,6 +119,27 @@ fun BottomNavItem(
         Icon(painter = painter, contentDescription = label, tint = color, modifier = Modifier.size(26.dp))
         Spacer(modifier = Modifier.height(4.dp))
         Text(text = label, color = color, fontSize = 10.sp)
+    }
+}
+
+@Composable
+fun MainNavigation() {
+    val navController = rememberNavController()
+
+    NavHost(
+        navController = navController,
+        startDestination = "home"
+    ) {
+        composable("home") { //ホーム画面
+            HomeScreen(
+                onNavigateToAddEvent = { navController.navigate("add_event") }
+            )
+        }
+        composable("add_event") { //イベント作成画面
+            EventAddScreen(
+                onBack = { navController.popBackStack() }
+            )
+        }
     }
 }
 

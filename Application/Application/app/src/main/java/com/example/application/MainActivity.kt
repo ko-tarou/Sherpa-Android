@@ -63,7 +63,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(onNavigateToAddEvent: () -> Unit = {}) {
     var textState by remember { mutableStateOf("") }
     Column( //一番後ろ
         modifier = Modifier
@@ -107,7 +107,7 @@ fun HomeScreen() {
 
             PrimaryButton(
                 modifier = Modifier.height(40.dp),
-                onClick = { /* 新規作成 */ }
+                onClick = onNavigateToAddEvent
             ) {
                 Text(
                     text = "＋　新規作成",
@@ -169,7 +169,7 @@ fun HomeScreen() {
                             unfocusedContainerColor = Color.Transparent,
                             focusedIndicatorColor = Color.Transparent, // 下線を消す
                             unfocusedIndicatorColor = Color.Transparent,
-                            cursorColor = Color.White, // カーソルの色をアプリカラーの赤に
+                            cursorColor = Color.White,
                             focusedTextColor = Color.White,
                             unfocusedTextColor = Color.White
                         ),
@@ -344,7 +344,7 @@ fun PrimaryButton(
 @Composable
 fun GreetingPreview() {
     ApplicationTheme {
-        HomeScreen()
+        HomeScreen(onNavigateToAddEvent = {})
     }
 }
 
