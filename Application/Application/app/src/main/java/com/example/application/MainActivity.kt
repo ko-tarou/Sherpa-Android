@@ -72,7 +72,7 @@ fun HomeScreen(onNavigateToAddEvent: () -> Unit = {}) {
             .padding(16.dp)
     ) {
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         Row( //Event Architect
             modifier = Modifier
@@ -119,7 +119,7 @@ fun HomeScreen(onNavigateToAddEvent: () -> Unit = {}) {
 
         Spacer(modifier = Modifier.height(80.dp))
 
-        Column( //中央縦軸
+        Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
